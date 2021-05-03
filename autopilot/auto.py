@@ -113,7 +113,7 @@ class AutoPilot:
                 if self.mode == 'test':
 
                     assert 70 <= angle <= 110, "The angle is not realistic for the test image"
-                    assert 10 <= speed <= 35, "The speed is not realistic for the test image"
+                    assert 20 <= speed <= 35, "The speed is not realistic for the test image"
 
                 elif self.model == 'drive':
 
