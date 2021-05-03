@@ -7,6 +7,7 @@
 import threading
 import importlib
 from autopilot.settings import api_settings
+from art import text2art
 
 import cv2
 import time
@@ -26,6 +27,9 @@ class AutoPilot:
         :param mode:
         :param model:
         """
+
+        art = text2art("MLiS AutoPilot")
+        print(art)
 
         assert mode in ['test', 'camera', 'drive']
 
