@@ -2,7 +2,7 @@
 
 Template code for the AutoPilot self-driving software on the PiCar. 
 
-![alt text](https://github.com/adammoss/github/blob/main/test.png?raw=true)
+![alt text](https://github.com/adammoss/autopilot/blob/main/test.png?raw=true)
 
 ## Installation
 
@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 In test mode the code will a supplied test.png image, rather than live images from the car.
 
-We have included a base model to show how to inferface with your code. To test using this base model
+We have included a base model to show how to interface with your code. To test using this base model
 
 ```
 python run.py --model base
