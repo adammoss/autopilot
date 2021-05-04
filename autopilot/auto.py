@@ -7,7 +7,6 @@
 import threading
 import importlib
 from autopilot.settings import api_settings
-from art import text2art
 
 import cv2
 import time
@@ -28,8 +27,11 @@ class AutoPilot:
         :param model:
         """
 
-        art = text2art("MLiS AutoPilot")
-        print(art)
+        try:
+            from art import text2art
+            print(text2art("MLiS AutoPilot"))
+        except ModuleNotFoundError:
+            print('MLiS AutoPilot')
 
         assert mode in ['test', 'camera', 'drive']
 
