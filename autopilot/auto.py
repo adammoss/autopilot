@@ -132,5 +132,8 @@ class AutoPilot:
                         self.back_wheels.backward()
                         self.back_wheels.speed = abs(speed)
 
+            elif self.debug:
+                print('Cannot get image')
+
             if self.mode == 'camera':
                 self.back_wheels.speed = 0
