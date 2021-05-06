@@ -20,6 +20,8 @@ class Model:
         return image
 
     def predict(self, image):
+        if image.shape != (320, 240):
+            image = cv2.resize(image, (320, 240))
         image = self.preprocess(image)
         angle, speed = self.model.predict(np.array([image]))[0]
         # Training data was normalised so convert back to car units

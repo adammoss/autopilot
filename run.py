@@ -13,5 +13,5 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str, default='base')
     parser.add_argument('--mode', type=str, default='test')
     args = parser.parse_args()
-    ap = AutoPilot(mode=args.mode, model=args.model, debug=True)
+    ap = AutoPilot(mode=args.mode, model=args.model, debug=True, src=2)
     ap.start()

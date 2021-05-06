@@ -15,7 +15,7 @@ import time
 class AutoPilot:
 
     def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
-                 debug=False, mode='drive', model=None, width=320, height=240):
+                 debug=False, mode='drive', model=None, width=320, height=240, src=0):
         """
 
         :param capture:
@@ -40,7 +40,7 @@ class AutoPilot:
             try:
                 self.camera = capture.camera
             except:
-                self.camera = cv2.VideoCapture(0)
+                self.camera = cv2.VideoCapture(src)
                 self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
                 self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
@@ -55,7 +55,11 @@ class AutoPilot:
         # Thread variables
         self._started = False
         self._terminate = False
-        self._thread = None
+        self._drive_thread = None
+        self._frame_thread = None
+
+        # Latest frame
+        self.current_frame = None
 
         # NN Model
         if model is None:
@@ -77,8 +81,10 @@ class AutoPilot:
             return None
         self._started = True
         self._terminate = False
-        self._thread = threading.Thread(target=self._drive, args=())
-        self._thread.start()
+        self._frame_thread = threading.Thread(target=self._update_frame, args=())
+        self._frame_thread.start()
+        self._drive_thread = threading.Thread(target=self._drive, args=())
+        self._drive_thread.start()
 
     def stop(self):
         """
@@ -87,8 +93,17 @@ class AutoPilot:
         """
         self._started = False
         self._terminate = True
-        if self._thread is not None:
-            self._thread.join()
+        if self._frame_thread is not None:
+            self._frame_thread.join()
+        if self._drive_thread is not None:
+            self._drive_thread.join()
+
+    def _update_frame(self):
+        while not self._terminate:
+            if self.mode == 'test':
+                self.current_frame = cv2.imread(api_settings.TEST_IMAGE)
+            else:
+                _, self.current_frame = self.camera.read()
 
     def _drive(self):
         """
@@ -97,15 +112,10 @@ class AutoPilot:
         """
         while not self._terminate:
 
-            if self.mode == 'test':
-                frame = cv2.imread(api_settings.TEST_IMAGE)
-            else:
-                ret, frame = self.camera.read()
-
-            if frame is not None:
+            if self.current_frame is not None:
 
                 start_time = time.time()
-                angle, speed = self.model.predict(frame)
+                angle, speed = self.model.predict(self.current_frame)
 
                 angle = int(angle)
                 speed = int(speed)
