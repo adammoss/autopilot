@@ -99,6 +99,10 @@ class AutoPilot:
             self._drive_thread.join()
 
     def _update_frame(self):
+        """
+        Seperate thread to continually update latest frame
+        :return:
+        """
         while not self._terminate:
             if self.mode == 'test':
                 self.current_frame = cv2.imread(api_settings.TEST_IMAGE)
