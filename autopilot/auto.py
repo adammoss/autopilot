@@ -137,5 +137,5 @@ class AutoPilot:
             elif self.debug:
                 print('Cannot get image')
 
-            if self.mode == 'camera':
+            if self.mode == 'camera' and self.back_wheels is not None:
                 self.back_wheels.speed = 0
