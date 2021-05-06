@@ -27,6 +27,12 @@ class AutoPilot:
         :param model:
         """
 
+        try:
+            from art import text2art
+            print(text2art("MLiS AutoPilot"))
+        except ModuleNotFoundError:
+            print('MLiS AutoPilot')
+
         assert mode in ['test', 'camera', 'drive']
 
         # Try getting camera from already running capture object, otherwise get a new CV2 video capture object
@@ -109,7 +115,7 @@ class AutoPilot:
                 if self.mode == 'test':
 
                     assert 70 <= angle <= 110, "The angle is not realistic for the test image"
-                    assert 10 <= speed <= 35, "The speed is not realistic for the test image"
+                    assert 20 <= speed <= 35, "The speed is not realistic for the test image"
 
                 elif self.model == 'drive':
 
@@ -125,6 +131,9 @@ class AutoPilot:
                     else:
                         self.back_wheels.backward()
                         self.back_wheels.speed = abs(speed)
+
+            elif self.debug:
+                print('Cannot get image')
 
             if self.mode == 'camera':
                 self.back_wheels.speed = 0
