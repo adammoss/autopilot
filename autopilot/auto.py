@@ -7,7 +7,7 @@
 import threading
 import importlib
 from autopilot.settings import api_settings
-
+import collections
 import cv2
 import time
 
@@ -59,7 +59,7 @@ class AutoPilot:
         self._frame_thread = None
 
         # Latest frame
-        self.current_frame = None
+        self.current_frame = collections.deque(maxlen=1)
 
         # NN Model
         if model is None:
@@ -105,9 +105,10 @@ class AutoPilot:
         """
         while not self._terminate:
             if self.mode == 'test':
-                self.current_frame = cv2.imread(api_settings.TEST_IMAGE)
+                frame = cv2.imread(api_settings.TEST_IMAGE)
             else:
-                _, self.current_frame = self.camera.read()
+                _, frame = self.camera.read()
+            self.current_frame.append(frame)
 
     def _drive(self):
         """
@@ -116,10 +117,12 @@ class AutoPilot:
         """
         while not self._terminate:
 
-            if self.current_frame is not None:
+            if len(self.current_frame) > 0:
 
                 start_time = time.time()
-                angle, speed = self.model.predict(self.current_frame)
+
+                frame = self.current_frame.pop()
+                angle, speed = self.model.predict(frame)
 
                 angle = int(angle)
                 speed = int(speed)
@@ -147,9 +150,6 @@ class AutoPilot:
                     else:
                         self.back_wheels.backward()
                         self.back_wheels.speed = abs(speed)
-
-            elif self.debug:
-                print('Cannot get image')
 
             if self.mode == 'camera' and self.back_wheels is not None:
                 self.back_wheels.speed = 0
