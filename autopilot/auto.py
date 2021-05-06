@@ -100,7 +100,7 @@ class AutoPilot:
 
     def _update_frame(self):
         """
-        Seperate thread to continually update latest frame
+        Separate thread to continually update latest frame
         :return:
         """
         while not self._terminate:
