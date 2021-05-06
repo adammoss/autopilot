@@ -4,9 +4,12 @@ import tensorflow as tf
 import os
 
 class Model:
+
+    speed_model = 'speed_model/'
+    angle_model = 'angle_model/'
     def __init__(self):
-        self.speed_model = tf.keras.models.load_model('autopilot/models/maggie/speed_model/')
-        self.angle_model = tf.keras.models.load_model('autopilot/models/maggie/angle_model/')
+        self.speed_model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.abspath(__file__)), self.speed_model))
+        self.angle_model = tf.keras.models.load_model(os.path.join(os.path.dirname(os.path.abspath(__file__)), self.angle_model))
 
     def preprocess(self, image):
         im = tf.image.convert_image_dtype(image, tf.float32)
