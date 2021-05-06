@@ -15,7 +15,7 @@ import time
 class AutoPilot:
 
     def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
-                 debug=False, mode='drive', model=None):
+                 debug=False, mode='drive', model=None, width=320, height=240):
         """
 
         :param capture:
@@ -41,6 +41,8 @@ class AutoPilot:
                 self.camera = capture.camera
             except:
                 self.camera = cv2.VideoCapture(0)
+                self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+                self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
         # These are picar controls
         self.front_wheels = front_wheels
@@ -117,7 +119,7 @@ class AutoPilot:
                     assert 70 <= angle <= 110, "The angle is not realistic for the test image"
                     assert 20 <= speed <= 35, "The speed is not realistic for the test image"
 
-                elif self.model == 'drive':
+                elif self.mode == 'drive':
 
                     # Do not allow angle or speed to go out of range
                     angle = max(min(angle, self.front_wheels._max_angle), self.front_wheels._min_angle)
