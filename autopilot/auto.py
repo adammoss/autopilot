@@ -15,7 +15,7 @@ import time
 class AutoPilot:
 
     def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
-                 debug=False, mode='drive', model=None, width=320, height=240, src=0):
+                 debug=False, mode='drive', model=None, width=320, height=240, capture_src=0):
         """
 
         :param capture:
@@ -25,6 +25,9 @@ class AutoPilot:
         :param debug:
         :param mode:
         :param model:
+        :param width:
+        :param height:
+        :param capture_src:
         """
 
         try:
@@ -40,7 +43,7 @@ class AutoPilot:
             try:
                 self.camera = capture.camera
             except:
-                self.camera = cv2.VideoCapture(src)
+                self.camera = cv2.VideoCapture(capture_src)
                 self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
                 self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
@@ -97,6 +100,8 @@ class AutoPilot:
             self._frame_thread.join()
         if self._drive_thread is not None:
             self._drive_thread.join()
+        if self.back_wheels is not None:
+            self.back_wheels.speed = 0
 
     def _update_frame(self):
         """
@@ -150,6 +155,3 @@ class AutoPilot:
                     else:
                         self.back_wheels.backward()
                         self.back_wheels.speed = abs(speed)
-
-            if self.mode == 'camera' and self.back_wheels is not None:
-                self.back_wheels.speed = 0
