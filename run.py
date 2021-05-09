@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--capture_src', type=int, default=0)
     parser.add_argument('--picar_config', type=str, default='')
     parser.add_argument('--duration', type=int, default=300)
+    parser.add_argument('--max_speed', type=int, default=35)
     args = parser.parse_args()
     front_wheels = None
     back_wheels = None
@@ -31,7 +32,8 @@ if __name__ == '__main__':
             print('[!] Cannot setup picar, have you installed it?')
 
     ap = AutoPilot(front_wheels=front_wheels, back_wheels=back_wheels,
-                   mode=args.mode, model=args.model, debug=True, capture_src=args.capture_src)
+                   mode=args.mode, model=args.model, debug=True, capture_src=args.capture_src,
+                   max_speed=args.max_speed)
     ap.start()
     time.sleep(args.duration)
     ap.stop()

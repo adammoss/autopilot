@@ -15,7 +15,7 @@ import time
 class AutoPilot:
 
     def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
-                 debug=False, mode='drive', model=None, width=320, height=240, capture_src=0):
+                 debug=False, mode='drive', model=None, width=320, height=240, capture_src=0, max_speed=35):
         """
 
         :param capture:
@@ -51,6 +51,8 @@ class AutoPilot:
         self.front_wheels = front_wheels
         self.back_wheels = back_wheels
         self.camera_control = camera_control
+
+        self.max_speed = max_speed
 
         self.debug = debug
         self.mode = mode
@@ -130,7 +132,7 @@ class AutoPilot:
                 angle, speed = self.model.predict(frame)
 
                 angle = int(angle)
-                speed = int(speed)
+                speed = min(int(speed), self.max_speed)
 
                 if self.debug:
                     print('Inference time {0:0.2f} ms'.format(1000 * (time.time() - start_time)))
