@@ -15,6 +15,8 @@ class Model:
         self.angle_interpreter.allocate_tensors()
         self.speed_input_details = self.speed_interpreter.get_input_details()
         self.speed_output_details = self.speed_interpreter.get_output_details()
+        self.angle_input_details = self.angle_interpreter.get_input_details()
+        self.angle_output_details = self.angle_interpreter.get_output_details()
         self.floating_model = self.speed_input_details[0]['dtype'] == np.float32         # check the type of the input tensor
 
     def preprocess(self, image):
@@ -34,7 +36,7 @@ class Model:
         self.angle_interpreter.invoke()
 
         pred_speed = self.speed_interpreter.get_tensor(self.speed_output_details[0]['index'])[0]
-        speed = pred_speed[0].astype(int)*35
+        speed = np.around(pred_speed[0]).astype(int)*35
 
         pred_angle = self.angle_interpreter.get_tensor(self.angle_output_details[0]['index'])[0]
         angle = angles[np.argmax(pred_angle)]
