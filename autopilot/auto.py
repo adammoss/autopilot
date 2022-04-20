@@ -14,8 +14,8 @@ import time
 
 class AutoPilot:
 
-    def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
-                 debug=False, mode='drive', model=None, width=320, height=240, capture_src=0, max_speed=35):
+    def __init__(self, front_wheels=None, back_wheels=None, camera_control=None,
+                 debug=False, mode='drive', model=None, width=320, height=240, capture_src="/dev/video0", max_speed=35):
         """
 
         :param capture:
@@ -40,12 +40,11 @@ class AutoPilot:
 
         # Try getting camera from already running capture object, otherwise get a new CV2 video capture object
         if mode != 'test':
-            try:
-                self.camera = capture.camera
-            except:
-                self.camera = cv2.VideoCapture(capture_src)
-                self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-                self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            self.camera = cv2.VideoCapture(capture_src)
+            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            if not self.camera.isOpened():
+                raise ValueError("Failed to open the camera")
 
         # These are picar controls
         self.front_wheels = front_wheels
@@ -107,18 +106,28 @@ class AutoPilot:
             self._drive_thread.join()
         if self.back_wheels is not None:
             self.back_wheels.speed = 0
+        # Release the video device
+        self.camera.release()
 
     def _update_frame(self):
         """
         Separate thread to continually update latest frame
         :return:
         """
-        while not self._terminate:
-            if self.mode == 'test':
+        if self.mode == 'test':
+            while not self._terminate:
                 frame = cv2.imread(api_settings.TEST_IMAGE)
-            else:
-                _, frame = self.camera.read()
-            self.current_frame.append(frame)
+                self.current_frame.append(frame)
+        else:
+            while not self._terminate:
+                ret, frame = self.camera.read()
+                # Do not try to perform inference on a value of None
+                if not ret:
+                    # self.stop()
+                    # raise ValueError("Failed to fetch the frame")
+                    print("Failed to fetch the next frame.")
+                    continue
+                self.current_frame.append(frame)
 
     def _drive(self):
         """
