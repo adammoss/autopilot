@@ -36,7 +36,7 @@ class AutoPilot:
         except ModuleNotFoundError:
             print('MLiS AutoPilot')
 
-        assert mode in ['test', 'camera', 'drive']
+        assert mode in ['test', 'camera', 'drive', 'ludicrous', 'plaid']
 
         # Try getting camera from already running capture object, otherwise get a new CV2 video capture object
         if mode != 'test':
@@ -145,7 +145,7 @@ class AutoPilot:
                 self.inference_times.append(inference_time)
 
                 angle = int(angle)
-                speed = min(int(speed), self.max_speed)
+                speed = max(min(int(speed), self.max_speed), 0)
 
                 if self.debug:
                     if len(self.inference_times) > 0:
@@ -160,11 +160,14 @@ class AutoPilot:
                     assert 70 <= angle <= 110, "The angle is not realistic for the test image"
                     assert 20 <= speed <= 35, "The speed is not realistic for the test image"
 
-                elif self.mode == 'drive':
+                elif self.mode in ['drive', 'ludicrous', 'plaid']:
 
                     # Do not allow angle or speed to go out of allowed range
                     angle = max(min(angle, self.front_wheels._max_angle), self.front_wheels._min_angle)
-                    speed = max(min(speed, 100), 0)
+                    if self.mode == 'ludicrous':
+                        speed = 50
+                    elif self.mode == 'plaid':
+                        speed = 100
 
                     # Set picar angle and speed
                     self.front_wheels.turn(angle)
