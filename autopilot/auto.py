@@ -14,7 +14,7 @@ import time
 
 class AutoPilot:
 
-    def __init__(self, front_wheels=None, back_wheels=None, camera_control=None,
+    def __init__(self, capture=None, front_wheels=None, back_wheels=None, camera_control=None,
                  debug=False, mode='drive', model=None, width=320, height=240, capture_src="/dev/video0", max_speed=35):
         """
 
@@ -40,11 +40,14 @@ class AutoPilot:
 
         # Try getting camera from already running capture object, otherwise get a new CV2 video capture object
         if mode != 'test':
-            self.camera = cv2.VideoCapture(capture_src)
-            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-            if not self.camera.isOpened():
-                raise ValueError("Failed to open the camera")
+            if capture is not None and hasattr(capture, 'camera'):
+                self.camera = capture.camera
+            else:
+                self.camera = cv2.VideoCapture(capture_src)
+                self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+                self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+                if not self.camera.isOpened():
+                    raise ValueError("Failed to open the camera")
 
         # These are picar controls
         self.front_wheels = front_wheels
@@ -162,9 +165,9 @@ class AutoPilot:
 
                 elif self.mode == 'drive':
 
-                    # Do not allow angle or speed to go out of range
+                    # Do not allow angle or speed to go out of allowed range
                     angle = max(min(angle, self.front_wheels._max_angle), self.front_wheels._min_angle)
-                    speed = max(min(speed, 35), 0)
+                    speed = max(min(speed, 100), 0)
 
                     # Set picar angle and speed
                     self.front_wheels.turn(angle)
