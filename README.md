@@ -49,3 +49,27 @@ python run.py --model name_of_your_model
 ```
 
 The code will raise an error if you get unrealistic values for the speed and angle. Please also ensure your inference time is reasonable.
+
+## Running 
+
+To run on the car you will need to transfer your model to the car and run using python3
+
+```
+python3 run.py --model name_of_your_model --max_duration 60
+```
+
+Note there may be a conflict with the camera already running with the remote control inferface. In this case find the process(es) of the webserver
+
+```
+ps aux | grep runserver
+```
+
+Then look for any process IDs (second number). Next kill these by 
+
+```
+kill process_id
+```
+
+for any process IDs (there are normally 2 running). You should now be able to run autopilot.
+
+Note that to use remote control you will need to restart the car. 

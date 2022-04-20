@@ -66,6 +66,9 @@ class AutoPilot:
         # Latest frame
         self.current_frame = collections.deque(maxlen=1)
 
+        # Logging
+        self.inference_times = collections.deque(maxlen=10)
+
         # NN Model
         if model is None:
             model = api_settings.MODEL
@@ -126,16 +129,21 @@ class AutoPilot:
 
             if len(self.current_frame) > 0:
 
-                start_time = time.time()
-
                 frame = self.current_frame.pop()
+                start_time = time.time()
                 angle, speed = self.model.predict(frame)
+                inference_time = 1000 * (time.time() - start_time)
+                self.inference_times.append(inference_time)
 
                 angle = int(angle)
                 speed = min(int(speed), self.max_speed)
 
                 if self.debug:
-                    print('Inference time {0:0.2f} ms'.format(1000 * (time.time() - start_time)))
+                    if len(self.inference_times) > 0:
+                        mean_inference_time = sum(self.inference_times) / len(self.inference_times)
+                    else:
+                        mean_inference_time = inference_time
+                    print('Inference time {0:0.2f} ms, mean {1:0.2f} ms'.format(inference_time, mean_inference_time))
                     print('Angle: {0}, Speed: {1}'.format(angle, speed))
 
                 if self.mode == 'test':
