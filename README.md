@@ -47,7 +47,7 @@ python run.py --model maggie_tpu
 
 1. Create another directory in the models directory, with the directory name the same as your group name (no spaces please, use an underscore). 
 
-2. Create a file called model.py in this directory. Your model.py file can contain anything you like, the only restriction is it *must* define a Model class with a predict method, which takes an image as input and outputs the speed and angle (in 'car' units). 
+2. Create a file called model.py in this directory. Your model.py file can contain anything you like (use pytorch or jax if you want to!), the only restriction is it *must* define a Model class with a predict method, which takes an image as input and outputs the speed and angle (in 'car' units). 
 
 3. You can use models/base/model.py as a guide. Remember to change any image preprocessing to match what you did in training.
 
@@ -63,13 +63,13 @@ The code will raise an error if you get unrealistic values for the speed and ang
 
 ## Running 
 
-To run on the car you will need to transfer your model to the car and run using python3
+To run on the car you will need to transfer your model to the car and run using python3 (note the drive mode option)
 
 ```
 python3 run.py --model name_of_your_model --mode drive --max_duration 60
 ```
 
-Note there may be a conflict with the camera already running with the remote control inferface. In this case find the process(es) of the webserver
+There may be a conflict with the camera already running with the remote control inferface. In this case find the process(es) of the webserver
 
 ```
 ps aux | grep runserver
