@@ -1,6 +1,4 @@
-from tensorflow import keras
 import numpy as np
-import tflite_runtime.interpreter as tflite
 import tensorflow as tf
 import os
 
@@ -10,8 +8,10 @@ class Model:
     angle_model = 'angle_model.tflite'
 
     def __init__(self):
-        self.speed_interpreter = tflite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), self.speed_model))
-        self.angle_interpreter = tflite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), self.angle_model))
+        self.speed_interpreter = tf.lite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                                             self.speed_model))
+        self.angle_interpreter = tf.lite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                                             self.angle_model))
         self.speed_interpreter.allocate_tensors()
         self.angle_interpreter.allocate_tensors()
         self.speed_input_details = self.speed_interpreter.get_input_details()
