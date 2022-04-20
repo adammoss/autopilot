@@ -8,6 +8,7 @@ class Model:
 
     speed_model = 'speed_model.tflite'
     angle_model = 'angle_model.tflite'
+
     def __init__(self):
         self.speed_interpreter = tflite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), self.speed_model))
         self.angle_interpreter = tflite.Interpreter(model_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), self.angle_model))

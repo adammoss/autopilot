@@ -75,11 +75,8 @@ class AutoPilot:
         if model is None:
             model = api_settings.MODEL
         print('Using %s model' % model)
-        try:
-            module = importlib.import_module('autopilot.models.%s.model' % model)
-            self.model = module.Model()
-        except:
-            raise ValueError('Could not import model')
+        module = importlib.import_module('autopilot.models.%s.model' % model)
+        self.model = module.Model()
 
     def start(self):
         """
