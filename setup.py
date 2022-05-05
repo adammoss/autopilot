@@ -13,7 +13,7 @@ def readfile(filename):
 
 setuptools.setup(
     name="autopilot",
-    version="0.1.0",
+    version="0.2.0",
     author="Adam Moss",
     author_email="adam.moss@nottingham.ac.uk",
     description="AutoPilot package",
