@@ -10,6 +10,7 @@ from autopilot.settings import api_settings
 import collections
 import cv2
 import time
+import logging
 
 
 class AutoPilot:
@@ -76,11 +77,14 @@ class AutoPilot:
         # Load the model
         self.load_model(model)
 
+        logging.basicConfig(filename="log.log", level=logging.INFO)
+
     def load_model(self, model):
         # NN Model
         if model is None:
             model = api_settings.MODEL
         print('Using %s model' % model)
+        logging.info('Using %s model' % model)
         module = importlib.import_module('autopilot.models.%s.model' % model)
         self.model = module.Model()
 
