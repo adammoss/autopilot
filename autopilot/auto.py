@@ -48,6 +48,8 @@ class AutoPilot:
                 self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
                 if not self.camera.isOpened():
                     raise ValueError("Failed to open the camera")
+        else:
+            self.camera = None
 
         # These are picar controls
         self.front_wheels = front_wheels
@@ -111,7 +113,8 @@ class AutoPilot:
         if self.back_wheels is not None:
             self.back_wheels.speed = 0
         # Release the video device
-        self.camera.release()
+        if self.camera is not None:
+            self.camera.release()
 
     def _update_frame(self):
         """
