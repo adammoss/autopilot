@@ -87,6 +87,7 @@ class AutoPilot:
         logging.info('Using %s model' % model)
         module = importlib.import_module('autopilot.models.%s.model' % model)
         self.model = module.Model()
+        logging.info('Loaded model')
 
     def start(self):
         """
