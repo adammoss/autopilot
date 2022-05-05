@@ -74,7 +74,7 @@ class AutoPilot:
         # Logging
         self.inference_times = collections.deque(maxlen=10)
 
-        logging.basicConfig(filename="log.log", level=logging.INFO)
+        logging.basicConfig(filename="autopilot.log", level=logging.INFO)
 
         # Load the model
         self.load_model(model)
