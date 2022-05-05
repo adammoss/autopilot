@@ -71,6 +71,10 @@ class AutoPilot:
         # Logging
         self.inference_times = collections.deque(maxlen=10)
 
+        # Load the model
+        self.load_model(model)
+
+    def load_model(self, model):
         # NN Model
         if model is None:
             model = api_settings.MODEL
