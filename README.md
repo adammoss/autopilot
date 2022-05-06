@@ -66,7 +66,7 @@ The code will raise an error if you get unrealistic values for the speed and ang
 To run on the car you will need to transfer your model to the car and run using python3 (note the drive mode option)
 
 ```
-python3 run.py --model name_of_your_model --mode drive --max_duration 60
+python3 run.py --model name_of_your_model --mode drive --duration 60
 ```
 
 There may be a conflict with the camera already running with the remote control inferface. In this case find the process(es) of the webserver
