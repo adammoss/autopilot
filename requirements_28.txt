@@ -1,0 +1,4 @@
+tensorflow==2.8.0
+imutils>=0.5.4
+opencv-python>=4.5.1.48
+art>=5.1
