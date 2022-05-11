@@ -165,7 +165,7 @@ class AutoPilot:
                     else:
                         mean_inference_time = inference_time
                     print('Inference time {0:0.2f} ms, mean {1:0.2f} ms'.format(inference_time, mean_inference_time))
-                    print('Angle: {0}, Speed: {1}'.format(angle, speed))
+                    print('Angle: {0:0.2f}, Speed: {1:0.2f}'.format(angle, speed))
 
                 if self.mode == 'test':
 
