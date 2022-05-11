@@ -20,7 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     front_wheels = None
     back_wheels = None
-    if args.mode == 'drive':
+    if args.mode in ['drive', 'ludicrous', 'plaid']:
         try:
             import picar
             picar.setup()
