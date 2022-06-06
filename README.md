@@ -26,7 +26,7 @@ In test mode AutoPilot will use a supplied test image, rather than live images f
 We have included a base model to show how to interface with your code. To test using this model
 
 ```
-python run.py --model base
+python3 run.py --model base
 ```
 
 You should get an angle of 88 and a speed of 35, with an inference time of around 30 milliseconds (depending on hardware).
@@ -34,13 +34,13 @@ You should get an angle of 88 and a speed of 35, with an inference time of aroun
 Other available models are 
 
 ```
-python run.py --model maggie
+python3 run.py --model maggie
 ```
 
 and a model converted to tflite
 
 ```
-python run.py --model maggie_tpu
+python3 run.py --model maggie_tpu
 ```
 
 ## Modifying
@@ -56,7 +56,7 @@ python run.py --model maggie_tpu
 To test using your model
 
 ```
-python run.py --model name_of_your_model
+python3 run.py --model name_of_your_model
 ```
 
 The code will raise an error if you get unrealistic values for the speed and angle. Please also ensure your inference time is reasonable.
@@ -84,3 +84,11 @@ kill process_id
 for any process IDs (there are normally 2 running). You should now be able to run autopilot.
 
 Note that to use remote control you will need to restart the car. 
+
+If invoking the edge-TPU and you encounter something like:
+
+```
+libedgetpu.1.dylib' (open() failed with errno=13)
+```
+
+This means there is a failed connection with the eTPU. Make sure the the eTPU is plugged in and the light on

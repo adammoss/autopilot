@@ -1,0 +1,5 @@
+Collecting opencv-python
+  Downloading opencv_python-4.5.5.64-cp36-abi3-macosx_10_15_x86_64.whl (46.3 MB)
+Requirement already satisfied: numpy>=1.14.5 in /opt/anaconda3/envs/autopilot/lib/python3.7/site-packages (from opencv-python) (1.21.6)
+Installing collected packages: opencv-python
+Successfully installed opencv-python-4.5.5.64
