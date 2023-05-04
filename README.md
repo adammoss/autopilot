@@ -95,7 +95,7 @@ This means there is a failed connection with the eTPU. Make sure the the eTPU is
 
 ## Inference time issues
 
-If you are expering long inference times on the car, you should try to reduce your model complexity or reduce the size of images processed by your model. If you still have issues, you can run the car at a reduced speed by setting the max_speed argument 
+If you are expering long inference times on the car, you should try to reduce your model complexity or reduce the size of images processed by your model. If you still have issues, you can run the car at a reduced speed by setting the max_speed argument, for example
 
 ```
 python3 run.py --model name_of_your_model --mode drive --duration 60 --max_speed 30
