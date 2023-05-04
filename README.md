@@ -92,3 +92,13 @@ libedgetpu.1.dylib' (open() failed with errno=13)
 ```
 
 This means there is a failed connection with the eTPU. Make sure the the eTPU is plugged in and the light on
+
+## Inference time issues
+
+If you are expering long inference times on the car, you should try to reduce your model complexity or reduce the size of images processed by your model. If you still have issues, you can run the car at a reduced speed by setting the max_speed argument 
+
+```
+python3 run.py --model name_of_your_model --mode drive --duration 60 --max_speed 30
+```
+
+Pratically, we have found this needs to be > 25 in order for the car to still move. Please note that running at a reduced speed will mean it fails one of the challenges, which is to drive round the oval track at a speed of 50. 
